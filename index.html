@@ -110,7 +110,7 @@
         .intro-line { width: 60px; height: 1px; background: var(--gold); margin: 2.5rem auto; }
 
         /* ── SERVICE SECTIONS ── */
-        .svc-section { padding: 5rem 0; }
+        .svc-section { padding: 5rem 0; overflow: hidden; }
         .svc-section:nth-child(even) { background: #fff; }
         .svc-section:nth-child(odd) { background: var(--warm-white); }
 
@@ -120,52 +120,75 @@
         body[lang="ar"] .svc-header .svc-title { font-family: var(--font-ar); font-weight: 500; }
         .svc-desc { max-width: 650px; margin: 0 auto 1.5rem; font-size: 1.05rem; color: var(--mid-gray); line-height: 1.8; font-weight: 300; text-align: center; }
 
-        .svc-features { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-bottom: 3rem; }
+        .svc-features { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-bottom: 4rem; }
         .svc-features li {
             font-size: 0.88rem; color: var(--warm-gray); font-weight: 400;
             padding: 10px 22px; background: rgba(201,169,110,0.07);
             border: 1px solid rgba(201,169,110,0.15); border-radius: 100px;
         }
 
-        /* ── GALLERY GRID ── */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: auto auto;
-            gap: 8px;
+        /* ── CINEMATIC SCROLL GALLERY ── */
+        .gallery-container {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
         }
-        .gallery-grid .g-item { position: relative; overflow: hidden; border-radius: 8px; cursor: pointer; }
-        .gallery-grid .g-item img {
-            width: 100%; height: 100%; object-fit: cover; display: block;
-            transition: transform 0.8s var(--ease);
+        
+        .gallery-scroll {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            padding: 0 40px 20px 40px;
         }
-        .gallery-grid .g-item:hover img { transform: scale(1.06); }
-        .gallery-grid .g-item::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.15) 100%);
-            opacity: 0; transition: opacity 0.4s;
+        
+        body[lang="ar"] .gallery-scroll {
+            flex-direction: row-reverse;
         }
-        .gallery-grid .g-item:hover::after { opacity: 1; }
 
-        /* row heights */
-        .gallery-grid .g-item:nth-child(-n+3) { height: 320px; }
-        .gallery-grid .g-item:nth-child(n+4) { height: 240px; }
+        .gallery-scroll::-webkit-scrollbar {
+            display: none;
+        }
 
-        /* make first item span 2 cols on first section */
-        .gallery-grid.layout-a .g-item:nth-child(1) { grid-column: span 2; height: 360px; }
-        .gallery-grid.layout-a .g-item:nth-child(2) { height: 360px; }
-        .gallery-grid.layout-a .g-item:nth-child(n+4) { height: 220px; }
+        .gallery-scroll .g-item {
+            flex: 0 0 85%;
+            height: 400px;
+            scroll-snap-align: center;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
 
-        /* layout b: last item spans 2 cols */
-        .gallery-grid.layout-b .g-item:nth-child(4) { height: 280px; }
-        .gallery-grid.layout-b .g-item:nth-child(5) { grid-column: span 2; height: 280px; }
+        .gallery-scroll .g-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 1.2s var(--ease);
+        }
 
-        /* layout c: middle item tall */
-        .gallery-grid.layout-c .g-item:nth-child(2) { grid-row: span 2; height: 100%; }
-        .gallery-grid.layout-c .g-item:nth-child(1) { height: 240px; }
-        .gallery-grid.layout-c .g-item:nth-child(3) { height: 240px; }
-        .gallery-grid.layout-c .g-item:nth-child(4) { height: 240px; }
-        .gallery-grid.layout-c .g-item:nth-child(5) { grid-column: span 2; height: 260px; }
+        .gallery-scroll .g-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-scroll .g-item::after {
+            content: ''; 
+            position: absolute; 
+            inset: 0;
+            background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.2) 100%);
+            opacity: 0; 
+            transition: opacity 0.6s;
+            pointer-events: none;
+        }
+
+        .gallery-scroll .g-item:hover::after {
+            opacity: 1;
+        }
 
         /* ── LIGHTBOX ── */
         .lightbox {
@@ -224,12 +247,14 @@
         body[lang="ar"] .scroll-top { right: auto; left: 30px; }
 
         /* ── RESPONSIVE ── */
+        @media (min-width: 768px) {
+            .gallery-scroll .g-item { flex: 0 0 45%; height: 450px; scroll-snap-align: start; }
+        }
+        @media (min-width: 1024px) {
+            .gallery-scroll .g-item { flex: 0 0 32%; height: 500px; }
+        }
+
         @media (max-width: 1024px) {
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-            .gallery-grid.layout-a .g-item:nth-child(1) { grid-column: span 2; }
-            .gallery-grid.layout-b .g-item:nth-child(5) { grid-column: span 1; }
-            .gallery-grid.layout-c .g-item:nth-child(2) { grid-row: span 1; }
-            .gallery-grid.layout-c .g-item:nth-child(5) { grid-column: span 2; }
             .contact-grid { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
             .hero-dots, .hero-counter { display: none; }
         }
@@ -247,12 +272,9 @@
             .intro-text { font-size: 1.15rem; }
             .svc-section { padding: 3rem 0; }
             .svc-header .svc-num { font-size: 3.5rem; }
-            .gallery-grid .g-item:nth-child(-n+3),
-            .gallery-grid .g-item:nth-child(n+4) { height: 200px; }
-            .gallery-grid.layout-a .g-item:nth-child(1),
-            .gallery-grid.layout-a .g-item:nth-child(2) { height: 220px; }
-            .gallery-grid.layout-b .g-item:nth-child(5),
-            .gallery-grid.layout-c .g-item:nth-child(5) { height: 200px; }
+            
+            .gallery-scroll { padding: 0 20px 20px 20px; gap: 15px; }
+            
             .svc-features { gap: 0.8rem; }
             .svc-features li { font-size: 0.8rem; padding: 8px 16px; }
             .contact { padding: 4rem 0; }
@@ -267,13 +289,6 @@
         }
         @media (max-width: 480px) {
             .hero-content { bottom: 20%; }
-            .gallery-grid { grid-template-columns: 1fr 1fr; gap: 5px; }
-            .gallery-grid .g-item:nth-child(-n+3),
-            .gallery-grid .g-item:nth-child(n+4) { height: 160px; }
-            .gallery-grid.layout-a .g-item:nth-child(1) { grid-column: span 2; height: 180px; }
-            .gallery-grid.layout-a .g-item:nth-child(2) { height: 160px; }
-            .gallery-grid.layout-b .g-item:nth-child(5) { grid-column: span 2; height: 160px; }
-            .gallery-grid.layout-c .g-item:nth-child(5) { grid-column: span 2; height: 160px; }
         }
     </style>
 </head>
@@ -305,11 +320,11 @@
 </div>
 
 <section class="hero" id="home">
-    <div class="hero-slide active"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop" alt="Gourmet food" fetchpriority="high"></div>
-    <div class="hero-slide"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070&auto=format&fit=crop" alt="Fine dining" loading="lazy"></div>
-    <div class="hero-slide"><img src="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=2070&auto=format&fit=crop" alt="Catering spread" loading="lazy"></div>
-    <div class="hero-slide"><img src="https://images.unsplash.com/photo-1530062845289-9109b2c9c868?q=80&w=2070&auto=format&fit=crop" alt="Buffet" loading="lazy"></div>
-    <div class="hero-slide"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2070&auto=format&fit=crop" alt="Fresh baked" loading="lazy"></div>
+    <div class="hero-slide active"><img src="https://i.postimg.cc/529cXBT7/whole-catering-place-wide.jpg" alt="Wide catering setup" fetchpriority="high"></div>
+    <div class="hero-slide"><img src="https://i.postimg.cc/YqzK2nns/name-on-plate.jpg" alt="Elegant plate setting" loading="lazy"></div>
+    <div class="hero-slide"><img src="https://i.postimg.cc/Gm304FVM/whole-catering-place.jpg" alt="Catering ambience" loading="lazy"></div>
+    <div class="hero-slide"><img src="https://i.postimg.cc/m2yfZXXd/flowers-on-table.jpg" alt="Table decorations" loading="lazy"></div>
+    <div class="hero-slide"><img src="https://i.postimg.cc/wTpYp8VM/white-label-1.jpg" alt="Premium food preparation" loading="lazy"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content" id="heroContent"></div>
     <div class="hero-dots" id="heroDots"></div>
@@ -342,12 +357,14 @@
             <li class="lang-en">VIP Functions</li><li class="lang-ar">حفلات كبار الشخصيات</li>
             <li class="lang-en">Tailored Menus</li><li class="lang-ar">منيو مخصص</li>
         </ul>
-        <div class="gallery-grid layout-a reveal reveal-d3" data-gallery="catering">
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=1200&auto=format&fit=crop" alt="Catering spread" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1530062845289-9109b2c9c868?q=80&w=800&auto=format&fit=crop" alt="Buffet service" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=800&auto=format&fit=crop" alt="Event dining" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=800&auto=format&fit=crop" alt="Food platter" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=800&auto=format&fit=crop" alt="Plated dish" loading="lazy"></div>
+    </div>
+    <div class="gallery-container">
+        <div class="gallery-scroll reveal reveal-d3" data-gallery="catering">
+            <div class="g-item"><img src="https://i.postimg.cc/J45V766b/fish-cups.jpg" alt="Seafood cups" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/PrQsf33z/fish-in-cups-2.jpg" alt="Appetizer cups" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/vHswsFzx/bread-rice-and-other-stuff.jpg" alt="Buffet spread" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/qMxVBbbD/oranges-w-names-1(not-priority).jpg" alt="Custom event details" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/bwYXZxWT/oranges-w-names-2(not-priority).jpg" alt="Custom fruit display" loading="lazy"></div>
         </div>
     </div>
 </section>
@@ -367,12 +384,13 @@
             <li class="lang-en">Food Brands &amp; Influencers</li><li class="lang-ar">براندات ومشاهير</li>
             <li class="lang-en">Scalable &amp; Confidential</li><li class="lang-ar">سري وقابل للتوسع</li>
         </ul>
-        <div class="gallery-grid layout-b reveal reveal-d3" data-gallery="whitelabel">
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=800&auto=format&fit=crop" alt="Kitchen production" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=800&auto=format&fit=crop" alt="Chef cooking" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?q=80&w=800&auto=format&fit=crop" alt="Food preparation" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?q=80&w=800&auto=format&fit=crop" alt="Cooking process" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?q=80&w=1200&auto=format&fit=crop" alt="Fresh ingredients" loading="lazy"></div>
+    </div>
+    <div class="gallery-container">
+        <div class="gallery-scroll reveal reveal-d3" data-gallery="whitelabel">
+            <div class="g-item"><img src="https://i.postimg.cc/wTpYp8VM/white-label-1.jpg" alt="White label production" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/Qx3Z3GbX/white-label-2.jpg" alt="Custom food packaging" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/L6pFpKTR/white-label-3.jpg" alt="Commercial kitchen process" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/SNhbhFrJ/white-label-4.jpg" alt="Brand production" loading="lazy"></div>
         </div>
     </div>
 </section>
@@ -392,12 +410,14 @@
             <li class="lang-en">Ready-to-Serve</li><li class="lang-ar">جاهز للتقديم</li>
             <li class="lang-en">Flexible Restocking</li><li class="lang-ar">توريد مرن</li>
         </ul>
-        <div class="gallery-grid layout-c reveal reveal-d3" data-gallery="supply">
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop" alt="Bakery display" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?q=80&w=800&auto=format&fit=crop" alt="Pastries" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1530610476181-d83430b64dcd?q=80&w=800&auto=format&fit=crop" alt="Croissants" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=800&auto=format&fit=crop" alt="Coffee service" loading="lazy"></div>
-            <div class="g-item"><img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1200&auto=format&fit=crop" alt="Macarons" loading="lazy"></div>
+    </div>
+    <div class="gallery-container">
+        <div class="gallery-scroll reveal reveal-d3" data-gallery="supply">
+            <div class="g-item"><img src="https://i.postimg.cc/BQ0f09gF/dessert-1.jpg" alt="Premium desserts" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/DyPkfjjX/dessert-2.jpg" alt="Sweet pastries" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/PrQsf33v/dessert-closup-3.jpg" alt="Dessert close-up" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/MKSJS2Dj/breads-and-nice-stuff-casusal.jpg" alt="Casual breads" loading="lazy"></div>
+            <div class="g-item"><img src="https://i.postimg.cc/ZKxtY778/drinks.jpg" alt="Beverage selection" loading="lazy"></div>
         </div>
     </div>
 </section>
@@ -527,7 +547,7 @@
     var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg'),
         lbCounter=document.getElementById('lbCounter'), lbImages=[], lbIdx=0;
 
-    document.querySelectorAll('.gallery-grid').forEach(function(grid){
+    document.querySelectorAll('.gallery-scroll').forEach(function(grid){
         var items=grid.querySelectorAll('.g-item');
         items.forEach(function(item,idx){
             item.onclick=function(){
@@ -535,7 +555,7 @@
                 items.forEach(function(it){ 
                     var img = it.querySelector('img');
                     lbImages.push({
-                        src: img.src.replace('w=800','w=1600').replace('w=1200','w=1600'),
+                        src: img.src, /* Removed the w=800 replace since these are direct file links now */
                         alt: img.alt || ''
                     }); 
                 });

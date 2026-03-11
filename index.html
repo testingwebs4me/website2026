@@ -2,14 +2,20 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
+    <meta name="theme-color" content="#231F20">
+    
+    <link rel="icon" type="image/png" href="https://i.ibb.co/VpqxrBy2/prime-logo-white.png">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/VpqxrBy2/prime-logo-white.png">
+
     <title>PRIME by Asma - Catering & Food Services</title>
     <meta name="title" content="PRIME by Asma - Catering & Food Services">
     <meta name="description" content="We are the kitchen behind your success — delivering exceptional catering, white-label production, and daily supply to hotels and cafés across the Kingdom.">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.prime-sa.com/"> <meta property="og:title" content="PRIME by Asma - Catering & Food Services">
+    <meta property="og:url" content="https://www.prime-sa.com/">
+    <meta property="og:title" content="PRIME by Asma - Catering & Food Services">
     <meta property="og:description" content="Delivering exceptional catering, white-label production, and daily supply to hotels and cafés.">
     <meta property="og:image" content="https://i.postimg.cc/529cXBT7/whole-catering-place-wide.jpg">
 
@@ -39,7 +45,13 @@
             --nav-h: 90px;
             --ease: cubic-bezier(0.16, 1, 0.3, 1);
         }
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Mobile App Feel Adjustments */
+        *, *::before, *::after { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; /* Removes grey tap flash */
+        }
+        
         html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
         body { font-family: var(--font-b); line-height: 1.6; color: var(--dark); overflow-x: hidden; background: var(--warm-white); }
         body[lang="ar"] { font-family: var(--font-ar); direction: rtl; }
@@ -157,6 +169,8 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
             padding: 0 40px 20px 40px;
+            user-select: none; /* Prevents text selection while swiping */
+            -webkit-user-select: none;
         }
         
         body[lang="ar"] .gallery-scroll {
@@ -184,6 +198,7 @@
             object-fit: cover;
             display: block;
             transition: transform 1.2s var(--ease);
+            pointer-events: none; /* Helps smooth out the swipe gesture */
         }
 
         .gallery-scroll .g-item:hover img {
@@ -216,6 +231,8 @@
             transform: scale(0.92); transition: transform 0.5s var(--ease);
         }
         .lightbox.open img { transform: scale(1); }
+        
+        /* 44x44 Touch Targets Minimum */
         .lb-close {
             position: absolute; top: 24px; right: 28px; width: 44px; height: 44px;
             background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
@@ -293,11 +310,14 @@
             .svc-features li { font-size: 0.8rem; padding: 8px 16px; }
             .contact { padding: 4rem 0; }
             .contact-card { padding: 1.4rem 1.2rem; gap: 1rem; }
-            .scroll-top { bottom: 20px; right: 20px; width: 42px; height: 42px; }
+            /* Ensuring mobile scroll-to-top meets Apple 44px standard */
+            .scroll-top { bottom: 20px; right: 20px; width: 44px; height: 44px; } 
             body[lang="ar"] .scroll-top { right: auto; left: 20px; }
             .mob-menu a { font-size: 1.8rem; }
             body[lang="ar"] .mob-menu a { font-size: 1.5rem; }
-            .lb-nav { width: 40px; height: 40px; }
+            
+            /* Ensuring Lightbox nav targets are 44x44 on mobile */
+            .lb-nav { width: 44px; height: 44px; }
             .lb-prev { left: 10px; }
             .lb-next { right: 10px; }
         }
@@ -530,10 +550,10 @@
     // ── Nav + scroll ──
     var nav=document.getElementById('nav'), stb=document.getElementById('scrollTopBtn');
     window.addEventListener('scroll',function(){
-        nav.classList.toggle('scrolled',scrollY>50);
-        stb.classList.toggle('visible',scrollY>400);
+        nav.classList.toggle('scrolled',window.scrollY>50);
+        stb.classList.toggle('visible',window.scrollY>400);
     },{passive:true});
-    stb.onclick=function(){scrollTo({top:0,behavior:'smooth'});};
+    stb.onclick=function(){window.scrollTo({top:0,behavior:'smooth'});};
 
     // ── Mobile menu ──
     var burger=document.getElementById('burger'), mob=document.getElementById('mobMenu');
@@ -544,12 +564,12 @@
     document.querySelectorAll('a[href^="#"]').forEach(function(a){
         a.onclick=function(e){
             var h=this.getAttribute('href');
-            if(h==='#'){e.preventDefault();scrollTo({top:0,behavior:'smooth'});return;}
+            if(h==='#'){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});return;}
             var t=document.querySelector(h);
-            if(t){e.preventDefault();scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-70,behavior:'smooth'});}
+            if(t){e.preventDefault();window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-70,behavior:'smooth'});}
         };
     });
-    document.getElementById('logo').onclick=function(e){e.preventDefault();scrollTo({top:0,behavior:'smooth'});};
+    document.getElementById('logo').onclick=function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});};
 
     // ── Reveal ──
     var obs=new IntersectionObserver(function(entries){
@@ -624,7 +644,7 @@
     });
 
     if('scrollRestoration' in history) history.scrollRestoration='manual';
-    scrollTo(0,0);
+    window.scrollTo(0,0);
 })();
 </script>
 </body>

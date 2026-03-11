@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIME by Asma - Catering & Food Services</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Outfit:wght@200;300;400;500;600&family=Noto+Kufi+Arabic:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --charcoal: #1a1a1a;
+            --dark: #231F20;
+            --warm-gray: #3a3532;
+            --mid-gray: #7a7370;
+            --cream: #f0ebe4;
+            --warm-white: #faf8f5;
+            --gold: #c9a96e;
+            --gold-light: #dfc89a;
+            --gold-dark: #a88a4e;
+            --font-d: 'Cormorant Garamond', Georgia, serif;
+            --font-b: 'Outfit', sans-serif;
+            --font-ar: 'Noto Kufi Arabic', sans-serif;
+            --nav-h: 90px;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--font-b); line-height: 1.6; color: var(--dark); overflow-x: hidden; background: var(--warm-white); }
+        body[lang="ar"] { font-family: var(--font-ar); direction: rtl; }
+        body[lang="ar"] h1, body[lang="ar"] h2, body[lang="ar"] h3 { font-family: var(--font-ar); }
+
+        body[lang="en"] .lang-ar { display: none !important; }
+        body[lang="ar"] .lang-en { display: none !important; }
+
+        body::after {
+            content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9998; opacity: 0.022;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* ── NAV ── */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; transition: background 0.5s, box-shadow 0.5s; }
+        nav.scrolled { background: rgba(10,10,10,0.92); backdrop-filter: blur(20px) saturate(180%); box-shadow: 0 1px 0 rgba(201,169,110,0.15); }
+        .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); transition: height 0.5s; }
+        nav.scrolled .nav-inner { height: 70px; }
+        body[lang="ar"] .nav-inner { flex-direction: row-reverse; }
+        .nav-logo { display: flex; align-items: center; text-decoration: none; transition: transform 0.3s; }
+        .nav-logo:hover { transform: scale(1.03); }
+        .nav-logo img { height: 70px; width: auto; transition: height 0.5s; }
+        nav.scrolled .nav-logo img { height: 50px; }
+        .nav-links { display: flex; gap: 0.5rem; list-style: none; }
+        body[lang="ar"] .nav-links { flex-direction: row-reverse; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.82rem; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase; padding: 0.6rem 1.2rem; border-radius: 100px; transition: all 0.4s var(--ease); }
+        .nav-links a:hover { color: #fff; background: rgba(201,169,110,0.12); }
+        .nav-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-btn { background: transparent; color: var(--gold); border: 1px solid rgba(201,169,110,0.35); padding: 7px 18px; border-radius: 100px; cursor: pointer; font-size: 0.78rem; font-weight: 500; letter-spacing: 1px; font-family: var(--font-ar); transition: all 0.4s; }
+        .lang-btn:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+        .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; padding: 8px; z-index: 1002; }
+        .hamburger span { width: 24px; height: 1.5px; background: var(--gold-light); transition: all 0.4s var(--ease); transform-origin: center; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(4px,5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4px,-5px); }
+        .mob-menu { position: fixed; inset: 0; background: rgba(10,10,10,0.97); backdrop-filter: blur(30px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease); }
+        .mob-menu.active { opacity: 1; pointer-events: all; }
+        .mob-menu ul { list-style: none; text-align: center; display: flex; flex-direction: column; gap: 0.5rem; }
+        .mob-menu a { color: rgba(255,255,255,0.6); text-decoration: none; font-family: var(--font-d); font-size: 2.5rem; font-weight: 300; letter-spacing: 3px; display: block; padding: 0.8rem 2rem; transition: color 0.4s; }
+        body[lang="ar"] .mob-menu a { font-family: var(--font-ar); font-size: 2rem; letter-spacing: 0; }
+        .mob-menu a:hover { color: var(--gold); }
+
+        /* ── HERO ── */
+        .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; background: var(--black); }
+        .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; z-index: 1; }
+        .hero-slide.active { opacity: 1; z-index: 2; }
+        .hero-slide img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); transition: transform 8s linear; }
+        .hero-slide.active img { transform: scale(1.0); }
+        .hero-overlay { position: absolute; inset: 0; z-index: 3; background: linear-gradient(180deg, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.12) 40%, rgba(10,10,10,0.5) 80%, rgba(10,10,10,0.85) 100%); }
+        .hero-content { position: absolute; bottom: 14%; left: 0; right: 0; z-index: 5; text-align: center; padding: 0 40px; }
+        .hero-badge { display: inline-block; color: var(--gold); font-size: 0.7rem; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 1.2rem; border: 1px solid rgba(201,169,110,0.3); padding: 8px 24px; border-radius: 100px; opacity: 0; transform: translateY(20px); animation: fadeUp 1s var(--ease) 0.3s forwards; }
+        .hero-title { font-family: var(--font-d); font-size: clamp(3.5rem, 9vw, 8rem); font-weight: 300; color: #fff; letter-spacing: 0.15em; line-height: 1.05; margin-bottom: 1rem; text-transform: uppercase; opacity: 0; transform: translateY(30px); animation: fadeUp 1.2s var(--ease) 0.5s forwards; }
+        body[lang="ar"] .hero-title { font-family: var(--font-ar); letter-spacing: 0.03em; }
+        .hero-sub { font-size: clamp(1rem, 2vw, 1.35rem); color: rgba(255,255,255,0.6); font-weight: 300; letter-spacing: 2px; opacity: 0; transform: translateY(20px); animation: fadeUp 1s var(--ease) 0.8s forwards; }
+        .hero-scroll { position: absolute; bottom: 3%; left: 50%; transform: translateX(-50%); z-index: 5; display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; animation: fadeUp 1s var(--ease) 1.2s forwards; }
+        .hero-scroll span { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+        .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold-light), transparent); animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .hero-dots { position: absolute; bottom: 14%; right: 50px; z-index: 5; display: flex; flex-direction: column; gap: 12px; }
+        body[lang="ar"] .hero-dots { right: auto; left: 50px; }
+        .hero-dot { width: 8px; height: 8px; border-radius: 50%; padding: 0; border: 1px solid rgba(255,255,255,0.35); background: transparent; cursor: pointer; transition: all 0.4s; }
+        .hero-dot.active { background: var(--gold); border-color: var(--gold); transform: scale(1.3); }
+        .hero-counter { position: absolute; bottom: 4%; right: 50px; z-index: 5; font-size: 0.75rem; color: rgba(255,255,255,0.3); letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+        body[lang="ar"] .hero-counter { right: auto; left: 50px; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* ── SHARED ── */
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 40px; }
+        .sec-label { display: inline-block; font-size: 0.68rem; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 1rem; }
+        .sec-heading { font-family: var(--font-d); font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 300; color: var(--dark); line-height: 1.15; margin-bottom: 1.5rem; }
+        body[lang="ar"] .sec-heading { font-family: var(--font-ar); font-weight: 400; }
+        .reveal { opacity: 0; transform: translateY(50px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-d2 { transition-delay: 0.2s; }
+        .reveal-d3 { transition-delay: 0.35s; }
+
+        /* ── INTRO ── */
+        .intro { padding: 7rem 0 5rem; }
+        .intro-inner { text-align: center; max-width: 780px; margin: 0 auto; }
+        .intro-text { font-family: var(--font-d); font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 300; line-height: 1.8; color: var(--warm-gray); font-style: italic; }
+        body[lang="ar"] .intro-text { font-family: var(--font-ar); font-style: normal; line-height: 2; }
+        .intro-line { width: 60px; height: 1px; background: var(--gold); margin: 2.5rem auto; }
+
+        /* ── SERVICE SECTIONS ── */
+        .svc-section { padding: 5rem 0; }
+        .svc-section:nth-child(even) { background: #fff; }
+        .svc-section:nth-child(odd) { background: var(--warm-white); }
+
+        .svc-header { text-align: center; margin-bottom: 3rem; }
+        .svc-header .svc-num { font-family: var(--font-d); font-size: 5rem; font-weight: 300; color: var(--cream); line-height: 1; }
+        .svc-header .svc-title { font-family: var(--font-d); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; color: var(--dark); margin-bottom: 0.8rem; }
+        body[lang="ar"] .svc-header .svc-title { font-family: var(--font-ar); font-weight: 500; }
+        .svc-desc { max-width: 650px; margin: 0 auto 1.5rem; font-size: 1.05rem; color: var(--mid-gray); line-height: 1.8; font-weight: 300; text-align: center; }
+
+        .svc-features { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-bottom: 3rem; }
+        .svc-features li {
+            font-size: 0.88rem; color: var(--warm-gray); font-weight: 400;
+            padding: 10px 22px; background: rgba(201,169,110,0.07);
+            border: 1px solid rgba(201,169,110,0.15); border-radius: 100px;
+        }
+
+        /* ── GALLERY GRID ── */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto;
+            gap: 8px;
+        }
+        .gallery-grid .g-item { position: relative; overflow: hidden; border-radius: 8px; cursor: pointer; }
+        .gallery-grid .g-item img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.8s var(--ease);
+        }
+        .gallery-grid .g-item:hover img { transform: scale(1.06); }
+        .gallery-grid .g-item::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.15) 100%);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .gallery-grid .g-item:hover::after { opacity: 1; }
+
+        /* row heights */
+        .gallery-grid .g-item:nth-child(-n+3) { height: 320px; }
+        .gallery-grid .g-item:nth-child(n+4) { height: 240px; }
+
+        /* make first item span 2 cols on first section */
+        .gallery-grid.layout-a .g-item:nth-child(1) { grid-column: span 2; height: 360px; }
+        .gallery-grid.layout-a .g-item:nth-child(2) { height: 360px; }
+        .gallery-grid.layout-a .g-item:nth-child(n+4) { height: 220px; }
+
+        /* layout b: last item spans 2 cols */
+        .gallery-grid.layout-b .g-item:nth-child(4) { height: 280px; }
+        .gallery-grid.layout-b .g-item:nth-child(5) { grid-column: span 2; height: 280px; }
+
+        /* layout c: middle item tall */
+        .gallery-grid.layout-c .g-item:nth-child(2) { grid-row: span 2; height: 100%; }
+        .gallery-grid.layout-c .g-item:nth-child(1) { height: 240px; }
+        .gallery-grid.layout-c .g-item:nth-child(3) { height: 240px; }
+        .gallery-grid.layout-c .g-item:nth-child(4) { height: 240px; }
+        .gallery-grid.layout-c .g-item:nth-child(5) { grid-column: span 2; height: 260px; }
+
+        /* ── LIGHTBOX ── */
+        .lightbox {
+            position: fixed; inset: 0; z-index: 10000; background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s var(--ease);
+        }
+        .lightbox.open { opacity: 1; pointer-events: all; }
+        .lightbox img {
+            max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 8px;
+            transform: scale(0.92); transition: transform 0.5s var(--ease);
+        }
+        .lightbox.open img { transform: scale(1); }
+        .lb-close {
+            position: absolute; top: 24px; right: 28px; width: 44px; height: 44px;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50%; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; transition: all 0.3s; color: #fff; font-size: 1.2rem;
+        }
+        .lb-close:hover { background: rgba(255,255,255,0.15); }
+        .lb-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 50px; height: 50px; background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15); border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s; color: #fff; font-size: 1.1rem;
+        }
+        .lb-nav:hover { background: rgba(201,169,110,0.2); border-color: var(--gold); }
+        .lb-prev { left: 20px; }
+        .lb-next { right: 20px; }
+        .lb-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: rgba(255,255,255,0.4); letter-spacing: 2px; }
+
+        /* ── CONTACT ── */
+        .contact { padding: 7rem 0; background: var(--black); position: relative; overflow: hidden; }
+        .contact::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(201,169,110,0.06), transparent 70%); pointer-events: none; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+        .contact-text .sec-label { color: var(--gold-light); }
+        .contact-text .sec-heading { color: #fff; }
+        .contact-sub { font-size: 1.1rem; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.8; }
+        .contact-cards { display: flex; flex-direction: column; gap: 1.2rem; }
+        .contact-card { display: flex; align-items: center; gap: 1.5rem; padding: 1.8rem 2rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; transition: all 0.4s var(--ease); text-decoration: none; color: inherit; }
+        .contact-card:hover { background: rgba(201,169,110,0.08); border-color: rgba(201,169,110,0.2); transform: translateY(-2px); }
+        .c-icon { width: 52px; height: 52px; border-radius: 12px; background: rgba(201,169,110,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .c-icon svg { width: 22px; height: 22px; fill: var(--gold); }
+        .c-label { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 4px; font-weight: 500; }
+        .c-val { font-size: 1.1rem; color: #fff; font-weight: 400; }
+
+        .footer { padding: 2rem 0; background: var(--black); border-top: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .footer p { font-size: 0.75rem; color: rgba(255,255,255,0.25); letter-spacing: 1px; }
+        .footer .g { color: var(--gold-dark); }
+
+        .scroll-top { position: fixed; bottom: 30px; right: 30px; width: 48px; height: 48px; border-radius: 50%; background: var(--dark); border: 1px solid rgba(201,169,110,0.25); color: var(--gold-light); cursor: pointer; z-index: 900; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(20px); pointer-events: none; transition: all 0.4s var(--ease); }
+        .scroll-top.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+        .scroll-top:hover { background: var(--gold-dark); color: #fff; transform: translateY(-2px); }
+        .scroll-top svg { width: 18px; height: 18px; fill: currentColor; }
+        body[lang="ar"] .scroll-top { right: auto; left: 30px; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-grid.layout-a .g-item:nth-child(1) { grid-column: span 2; }
+            .gallery-grid.layout-b .g-item:nth-child(5) { grid-column: span 1; }
+            .gallery-grid.layout-c .g-item:nth-child(2) { grid-row: span 1; }
+            .gallery-grid.layout-c .g-item:nth-child(5) { grid-column: span 2; }
+            .contact-grid { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+            .hero-dots, .hero-counter { display: none; }
+        }
+        @media (max-width: 768px) {
+            :root { --nav-h: 70px; }
+            .nav-inner { padding: 0 20px; }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-logo img { height: 50px; }
+            nav.scrolled .nav-logo img { height: 42px; }
+            .hero-content { bottom: 18%; padding: 0 24px; }
+            .hero-badge { font-size: 0.6rem; padding: 6px 16px; }
+            .container { padding: 0 20px; }
+            .intro { padding: 4rem 0 3rem; }
+            .intro-text { font-size: 1.15rem; }
+            .svc-section { padding: 3rem 0; }
+            .svc-header .svc-num { font-size: 3.5rem; }
+            .gallery-grid .g-item:nth-child(-n+3),
+            .gallery-grid .g-item:nth-child(n+4) { height: 200px; }
+            .gallery-grid.layout-a .g-item:nth-child(1),
+            .gallery-grid.layout-a .g-item:nth-child(2) { height: 220px; }
+            .gallery-grid.layout-b .g-item:nth-child(5),
+            .gallery-grid.layout-c .g-item:nth-child(5) { height: 200px; }
+            .svc-features { gap: 0.8rem; }
+            .svc-features li { font-size: 0.8rem; padding: 8px 16px; }
+            .contact { padding: 4rem 0; }
+            .contact-card { padding: 1.4rem 1.2rem; gap: 1rem; }
+            .scroll-top { bottom: 20px; right: 20px; width: 42px; height: 42px; }
+            body[lang="ar"] .scroll-top { right: auto; left: 20px; }
+            .mob-menu a { font-size: 1.8rem; }
+            body[lang="ar"] .mob-menu a { font-size: 1.5rem; }
+            .lb-nav { width: 40px; height: 40px; }
+            .lb-prev { left: 10px; }
+            .lb-next { right: 10px; }
+        }
+        @media (max-width: 480px) {
+            .hero-content { bottom: 20%; }
+            .gallery-grid { grid-template-columns: 1fr 1fr; gap: 5px; }
+            .gallery-grid .g-item:nth-child(-n+3),
+            .gallery-grid .g-item:nth-child(n+4) { height: 160px; }
+            .gallery-grid.layout-a .g-item:nth-child(1) { grid-column: span 2; height: 180px; }
+            .gallery-grid.layout-a .g-item:nth-child(2) { height: 160px; }
+            .gallery-grid.layout-b .g-item:nth-child(5) { grid-column: span 2; height: 160px; }
+            .gallery-grid.layout-c .g-item:nth-child(5) { grid-column: span 2; height: 160px; }
+        }
+    </style>
+</head>
+<body lang="en" dir="ltr">
+
+<nav id="nav">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo" id="logo"><img src="https://i.ibb.co/VpqxrBy2/prime-logo-white.png" alt="PRIME"></a>
+        <ul class="nav-links">
+            <li><a href="#catering"><span class="lang-en">Catering</span><span class="lang-ar">الضيافة</span></a></li>
+            <li><a href="#white-label"><span class="lang-en">White Label</span><span class="lang-ar">العلامة البيضاء</span></a></li>
+            <li><a href="#supplying"><span class="lang-en">Hotels &amp; Cafés</span><span class="lang-ar">المقاهي والفنادق</span></a></li>
+            <li><a href="#contact"><span class="lang-en">Contact</span><span class="lang-ar">تواصل معنا</span></a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="lang-btn" id="langBtn"><span class="lang-en">العربية</span><span class="lang-ar">English</span></button>
+            <div class="hamburger" id="burger"><span></span><span></span><span></span></div>
+        </div>
+    </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+    <ul>
+        <li><a href="#catering" class="mob-link"><span class="lang-en">Catering</span><span class="lang-ar">الضيافة</span></a></li>
+        <li><a href="#white-label" class="mob-link"><span class="lang-en">White Label</span><span class="lang-ar">العلامة البيضاء</span></a></li>
+        <li><a href="#supplying" class="mob-link"><span class="lang-en">Hotels &amp; Cafés</span><span class="lang-ar">المقاهي والفنادق</span></a></li>
+        <li><a href="#contact" class="mob-link"><span class="lang-en">Contact</span><span class="lang-ar">تواصل معنا</span></a></li>
+    </ul>
+</div>
+
+<section class="hero" id="home">
+    <div class="hero-slide active"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop" alt="Gourmet food" fetchpriority="high"></div>
+    <div class="hero-slide"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070&auto=format&fit=crop" alt="Fine dining" loading="lazy"></div>
+    <div class="hero-slide"><img src="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=2070&auto=format&fit=crop" alt="Catering spread" loading="lazy"></div>
+    <div class="hero-slide"><img src="https://images.unsplash.com/photo-1530062845289-9109b2c9c868?q=80&w=2070&auto=format&fit=crop" alt="Buffet" loading="lazy"></div>
+    <div class="hero-slide"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2070&auto=format&fit=crop" alt="Fresh baked" loading="lazy"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content" id="heroContent"></div>
+    <div class="hero-dots" id="heroDots"></div>
+    <div class="hero-counter" id="heroCounter">01 / 05</div>
+    <div class="hero-scroll"><span class="lang-en">Scroll</span><span class="lang-ar">اكتشف</span><div class="scroll-line"></div></div>
+</section>
+
+<section class="intro">
+    <div class="container">
+        <div class="intro-inner reveal">
+            <p class="intro-text lang-en">We are the kitchen behind your success — delivering exceptional catering, white-label production, and daily supply to hotels and cafés across the Kingdom.</p>
+            <p class="intro-text lang-ar">حنا المطبخ اللي ورا نجاحك — نقدم ضيافة استثنائية، إنتاج بالعلامة البيضاء، وتوريد يومي للفنادق والمقاهي في كل مكان.</p>
+            <div class="intro-line"></div>
+        </div>
+    </div>
+</section>
+
+<section class="svc-section" id="catering">
+    <div class="container">
+        <div class="svc-header reveal">
+            <div class="svc-num">01</div>
+            <h2 class="svc-title lang-en">Catering Services</h2>
+            <h2 class="svc-title lang-ar">خدمات الضيافة</h2>
+        </div>
+        <p class="svc-desc reveal lang-en">Full-scale food production for any occasion — customized, punctual, and seamless.</p>
+        <p class="svc-desc reveal lang-ar">نجهز لك الأكل كامل لأي مناسبة، بطريقة مرتبة، على الوقت، وبشكل يناسب ذوقك.</p>
+        <ul class="svc-features reveal reveal-d2">
+            <li class="lang-en">Corporate Dining</li><li class="lang-ar">ضيافة الشركات</li>
+            <li class="lang-en">Weddings &amp; Events</li><li class="lang-ar">أعراس ومناسبات</li>
+            <li class="lang-en">VIP Functions</li><li class="lang-ar">حفلات كبار الشخصيات</li>
+            <li class="lang-en">Tailored Menus</li><li class="lang-ar">منيو مخصص</li>
+        </ul>
+        <div class="gallery-grid layout-a reveal reveal-d3" data-gallery="catering">
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=1200&auto=format&fit=crop" alt="Catering spread" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1530062845289-9109b2c9c868?q=80&w=800&auto=format&fit=crop" alt="Buffet service" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=800&auto=format&fit=crop" alt="Event dining" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=800&auto=format&fit=crop" alt="Food platter" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=800&auto=format&fit=crop" alt="Plated dish" loading="lazy"></div>
+        </div>
+    </div>
+</section>
+
+<section class="svc-section" id="white-label">
+    <div class="container">
+        <div class="svc-header reveal">
+            <div class="svc-num">02</div>
+            <h2 class="svc-title lang-en">White Label</h2>
+            <h2 class="svc-title lang-ar">خدمة العلامة البيضاء</h2>
+        </div>
+        <p class="svc-desc reveal lang-en">Have the recipe or the concept? Let us bring it to life — under <strong>your brand name</strong>.</p>
+        <p class="svc-desc reveal lang-ar">عندك وصفة أو فكرة؟ حنّا نقدر نطلعها للنور باسم <strong>البراند حقك</strong>.</p>
+        <ul class="svc-features reveal reveal-d2">
+            <li class="lang-en">Full Production</li><li class="lang-ar">إنتاج كامل</li>
+            <li class="lang-en">Custom Packaging</li><li class="lang-ar">تغليف مخصص</li>
+            <li class="lang-en">Food Brands &amp; Influencers</li><li class="lang-ar">براندات ومشاهير</li>
+            <li class="lang-en">Scalable &amp; Confidential</li><li class="lang-ar">سري وقابل للتوسع</li>
+        </ul>
+        <div class="gallery-grid layout-b reveal reveal-d3" data-gallery="whitelabel">
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=800&auto=format&fit=crop" alt="Kitchen production" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=800&auto=format&fit=crop" alt="Chef cooking" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?q=80&w=800&auto=format&fit=crop" alt="Food preparation" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?q=80&w=800&auto=format&fit=crop" alt="Cooking process" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?q=80&w=1200&auto=format&fit=crop" alt="Fresh ingredients" loading="lazy"></div>
+        </div>
+    </div>
+</section>
+
+<section class="svc-section" id="supplying">
+    <div class="container">
+        <div class="svc-header reveal">
+            <div class="svc-num">03</div>
+            <h2 class="svc-title lang-en">Hotels &amp; Cafés Supply</h2>
+            <h2 class="svc-title lang-ar">خدمة المقاهي والفنادق</h2>
+        </div>
+        <p class="svc-desc reveal lang-en">Baked goods, sweets, and snacks — made daily, delivered fresh.</p>
+        <p class="svc-desc reveal lang-ar">حلويات، مخبوزات، وسناكات – طازجة كل يوم وتوصل وهي فرش.</p>
+        <ul class="svc-features reveal reveal-d2">
+            <li class="lang-en">Cafés &amp; Lounges</li><li class="lang-ar">مقاهي ولاونجات</li>
+            <li class="lang-en">Hotel Lobbies</li><li class="lang-ar">لوبيات الفنادق</li>
+            <li class="lang-en">Ready-to-Serve</li><li class="lang-ar">جاهز للتقديم</li>
+            <li class="lang-en">Flexible Restocking</li><li class="lang-ar">توريد مرن</li>
+        </ul>
+        <div class="gallery-grid layout-c reveal reveal-d3" data-gallery="supply">
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop" alt="Bakery display" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?q=80&w=800&auto=format&fit=crop" alt="Pastries" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1530610476181-d83430b64dcd?q=80&w=800&auto=format&fit=crop" alt="Croissants" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=800&auto=format&fit=crop" alt="Coffee service" loading="lazy"></div>
+            <div class="g-item"><img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1200&auto=format&fit=crop" alt="Macarons" loading="lazy"></div>
+        </div>
+    </div>
+</section>
+
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-text reveal">
+                <div class="sec-label lang-en">Get in Touch</div>
+                <div class="sec-label lang-ar">تواصل معنا</div>
+                <h2 class="sec-heading lang-en">Let's Work<br>Together</h2>
+                <h2 class="sec-heading lang-ar">معك من أول خطوة...<br>اطلب الآن</h2>
+                <p class="contact-sub lang-en">Looking to launch your food line, fuel an event, or stock your café with premium snacks? We're ready when you are.</p>
+                <p class="contact-sub lang-ar">تبي تطلق خط منتجات غذائية، تسوي مناسبة، أو تعبي مقهاك بسناكات مميزة؟ حنا جاهزين متى ما كنت جاهز.</p>
+            </div>
+            <div class="contact-cards reveal reveal-d2">
+                <a href="mailto:info@prime-sa.com" class="contact-card">
+                    <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+                    <div><div class="c-label lang-en">Email</div><div class="c-label lang-ar">البريد</div><div class="c-val">info@prime-sa.com</div></div>
+                </a>
+                <a href="https://wa.me/966552651344" target="_blank" class="contact-card">
+                    <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/></svg></div>
+                    <div><div class="c-label lang-en">WhatsApp</div><div class="c-label lang-ar">واتساب</div><div class="c-val">+966 55 265 1344</div></div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <p class="lang-en">&copy; 2025 <span class="g">PRIME by Asma</span> — All rights reserved</p>
+        <p class="lang-ar">&copy; 2025 <span class="g">PRIME by Asma</span> — جميع الحقوق محفوظة</p>
+    </div>
+</footer>
+
+<button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">
+    <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+</button>
+
+<div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lbClose">✕</button>
+    <button class="lb-nav lb-prev" id="lbPrev">❮</button>
+    <button class="lb-nav lb-next" id="lbNext">❯</button>
+    <img id="lbImg" src="" alt="">
+    <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<script>
+(function(){
+    var lang='en', body=document.body, html=document.documentElement;
+
+    function setLang(l){
+        lang=l;
+        body.setAttribute('lang',l); body.setAttribute('dir',l==='ar'?'rtl':'ltr');
+        html.setAttribute('lang',l); html.setAttribute('dir',l==='ar'?'rtl':'ltr');
+        document.title=l==='ar'?'برايم - خدمات الطعام والضيافة':'PRIME by Asma - Catering & Food Services';
+        updateHero();
+    }
+    document.getElementById('langBtn').onclick=function(){ setLang(lang==='en'?'ar':'en'); };
+
+    // ── Hero ──
+    var slides=document.querySelectorAll('.hero-slide'), total=slides.length, cur=0, timer,
+    data=[
+        {en:{badge:'Est. Riyadh',title:'PRIME',sub:'Professional Catering & Food Services'},ar:{badge:'من الرياض',title:'PRIME',sub:'خدمات الطعام والضيافة'}},
+        {en:{badge:'Our Philosophy',title:'The Kitchen Behind<br>Your Success',sub:''},ar:{badge:'فلسفتنا',title:'حنا المطبخ اللي<br>ورا نجاحك',sub:''}},
+        {en:{badge:'White Label',title:'Your Brand,<br>Our Expertise',sub:'Full production under your name'},ar:{badge:'العلامة البيضاء',title:'براندك،<br>خبرتنا',sub:'إنتاج كامل باسمك'}},
+        {en:{badge:'Events',title:'Making Every<br>Moment Memorable',sub:'Weddings, launches, VIP gatherings'},ar:{badge:'المناسبات',title:'نخلي كل لحظة<br>لا تُنسى',sub:'أعراس، إطلاقات، تجمعات خاصة'}},
+        {en:{badge:'Daily Supply',title:'Fresh Daily,<br>Delivered with Care',sub:'Hotels, cafés & concept stores'},ar:{badge:'التوريد',title:'طازج يومياً<br>يوصل بعناية',sub:'فنادق، مقاهي، ومحلات'}}
+    ];
+
+    function updateHero(){
+        var d=data[cur][lang], el=document.getElementById('heroContent');
+        el.innerHTML='<div class="hero-badge">'+d.badge+'</div><h1 class="hero-title">'+d.title+'</h1>'+(d.sub?'<p class="hero-sub">'+d.sub+'</p>':'');
+    }
+    function goTo(i){
+        if(i===cur)return;
+        slides[cur].classList.remove('active'); cur=i; slides[cur].classList.add('active');
+        document.querySelectorAll('.hero-dot').forEach(function(d,j){d.classList.toggle('active',j===cur);});
+        document.getElementById('heroCounter').textContent=String(cur+1).padStart(2,'0')+' / '+String(total).padStart(2,'0');
+        updateHero(); clearInterval(timer); timer=setInterval(function(){goTo((cur+1)%total);},6000);
+    }
+    var dotsEl=document.getElementById('heroDots');
+    for(var i=0;i<total;i++){(function(idx){
+        var b=document.createElement('button'); b.className='hero-dot'+(idx===0?' active':'');
+        b.onclick=function(){goTo(idx);}; dotsEl.appendChild(b);
+    })(i);}
+    var tx=0, hero=document.querySelector('.hero');
+    hero.addEventListener('touchstart',function(e){tx=e.changedTouches[0].screenX;});
+    hero.addEventListener('touchend',function(e){
+        var d=tx-e.changedTouches[0].screenX;
+        if(Math.abs(d)>50) goTo(d>0?(cur+1)%total:(cur-1+total)%total);
+    });
+    updateHero(); timer=setInterval(function(){goTo((cur+1)%total);},6000);
+
+    // ── Nav + scroll ──
+    var nav=document.getElementById('nav'), stb=document.getElementById('scrollTopBtn');
+    window.addEventListener('scroll',function(){
+        nav.classList.toggle('scrolled',scrollY>50);
+        stb.classList.toggle('visible',scrollY>400);
+    },{passive:true});
+    stb.onclick=function(){scrollTo({top:0,behavior:'smooth'});};
+
+    // ── Mobile menu ──
+    var burger=document.getElementById('burger'), mob=document.getElementById('mobMenu');
+    burger.onclick=function(){burger.classList.toggle('active');mob.classList.toggle('active');};
+    document.querySelectorAll('.mob-link').forEach(function(a){a.onclick=function(){burger.classList.remove('active');mob.classList.remove('active');};});
+
+    // ── Smooth scroll ──
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+        a.onclick=function(e){
+            var h=this.getAttribute('href');
+            if(h==='#'){e.preventDefault();scrollTo({top:0,behavior:'smooth'});return;}
+            var t=document.querySelector(h);
+            if(t){e.preventDefault();scrollTo({top:t.getBoundingClientRect().top+pageYOffset-90,behavior:'smooth'});}
+        };
+    });
+    document.getElementById('logo').onclick=function(e){e.preventDefault();scrollTo({top:0,behavior:'smooth'});};
+
+    // ── Reveal ──
+    var obs=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
+    },{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+
+    // ── Lightbox ──
+    var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg'),
+        lbCounter=document.getElementById('lbCounter'), lbImages=[], lbIdx=0;
+
+    document.querySelectorAll('.gallery-grid').forEach(function(grid){
+        var items=grid.querySelectorAll('.g-item');
+        items.forEach(function(item,idx){
+            item.onclick=function(){
+                lbImages=[]; lbIdx=idx;
+                items.forEach(function(it){ 
+                    var img = it.querySelector('img');
+                    lbImages.push({
+                        src: img.src.replace('w=800','w=1600').replace('w=1200','w=1600'),
+                        alt: img.alt || ''
+                    }); 
+                });
+                openLb();
+            };
+        });
+    });
+
+    function updateLbImage() {
+        lbImg.src = lbImages[lbIdx].src;
+        lbImg.alt = lbImages[lbIdx].alt;
+        lbCounter.textContent = (lbIdx+1) + ' / ' + lbImages.length;
+    }
+
+    function openLb(){
+        updateLbImage();
+        lb.classList.add('open'); document.body.style.overflow='hidden';
+    }
+    
+    function closeLb(){ lb.classList.remove('open'); document.body.style.overflow=''; }
+
+    document.getElementById('lbClose').onclick=closeLb;
+    lb.onclick=function(e){ if(e.target===lb) closeLb(); };
+    document.getElementById('lbPrev').onclick=function(e){ e.stopPropagation(); lbIdx=(lbIdx-1+lbImages.length)%lbImages.length; updateLbImage(); };
+    document.getElementById('lbNext').onclick=function(e){ e.stopPropagation(); lbIdx=(lbIdx+1)%lbImages.length; updateLbImage(); };
+
+    document.addEventListener('keydown',function(e){
+        if(!lb.classList.contains('open'))return;
+        if(e.key==='Escape') closeLb();
+        if(e.key==='ArrowLeft') document.getElementById('lbPrev').click();
+        if(e.key==='ArrowRight') document.getElementById('lbNext').click();
+    });
+
+    // lightbox swipe
+    var lbTx=0;
+    lb.addEventListener('touchstart',function(e){lbTx=e.changedTouches[0].screenX;});
+    lb.addEventListener('touchend',function(e){
+        var d=lbTx-e.changedTouches[0].screenX;
+        if(Math.abs(d)>50){ d>0?document.getElementById('lbNext').click():document.getElementById('lbPrev').click(); }
+    });
+
+    if('scrollRestoration' in history) history.scrollRestoration='manual';
+    scrollTo(0,0);
+})();
+</script>
+</body>
+</html>
